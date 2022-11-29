@@ -84,20 +84,54 @@ exports.ExpertLabProject = async function(req, res){
  * @Param []
  * @Returns final works projects 
  */
-     exports.FinalWorkProject = async function(req, res){
-        try {
-            await client.connect();
-    
-            const coll = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION)
-            const data = await coll.find({Categories: "Final Works"}).toArray();
-    
-            res.status(200).send(data)
-        } catch (err) {
-            res.status(500).send({
-                error: "Something went wrong",
-                value: err
-            })
-        } finally {
-            await client.close();
-        }
+exports.FinalWorkProject = async function(req, res){
+    try {
+        await client.connect();
+        
+        const coll = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION)
+        const data = await coll.find({Categories: "Final Works"}).toArray();
+        
+        res.status(200).send(data)
+    } catch (err) {
+        res.status(500).send({
+            error: "Something went wrong",
+            value: err
+        })
+    } finally {
+        await client.close();
     }
+}
+
+/**
+ * [POST] - Add project to database
+ *
+ * @Returns Created project 
+ */
+exports.addProject = async function (req, res){
+    try {
+        await client.connect();
+
+        const coll = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION)
+
+        let newProject = {
+            Title: req.body.Title,
+            Categories: req.body.Categories,
+            Description: req.body.Description,
+            GithubLink: req.body.GithubLink,
+            ImageUrls: req.body.ImageUrls,
+            Tags: req.body.Tags
+        }
+
+        let insertResult = await coll.insertOne(newProject);
+        res.status(201).send('project created');
+        return
+
+    }catch (err) {
+        res.status(500).send({
+            error: 'an error has occured',
+            value: err
+        });
+    }finally {
+        await client.close()
+    }
+}

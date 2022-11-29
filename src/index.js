@@ -13,7 +13,7 @@ app.use(cors());
 
 const projectRoutes = require('./projects')
 
-app.get('/', (res, req) => {
+app.get('/', (req, res) => {
     res.status(300).redirect('/index.html');
 })
 
@@ -27,6 +27,7 @@ app.group("/api", (router) => {
     router.get("/projects/uitgelicht", projectRoutes.UitgelichteProject)
     router.get("/projects/finalWorks", projectRoutes.FinalWorkProject)
     router.get("/projects/expertLab", projectRoutes.ExpertLabProject)
+    router.post("/projects", projectRoutes.addProject)
 })
 
 app.listen(port)
