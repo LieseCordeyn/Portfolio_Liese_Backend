@@ -44,6 +44,24 @@ app.group("/api", (router) => {
             await client.close();
         }
     })
+
+    router.get("/projects/uitgelicht", async (req, res) => {
+        try {
+            await client.connect();
+
+            const coll = client.db(process.env.DB_NAME).collection(process.env.DB_COLLECTION)
+            const data = await coll.find({Categories: "Uitgelicht"}).toArray();
+
+            res.status(200).send(data)
+        } catch (err) {
+            res.status(500).send({
+                error: "Something went wrong",
+                value: err
+            })
+        } finally {
+            await client.close();
+        }
+    })
 })
 
 app.listen(port, () => {
