@@ -1,5 +1,7 @@
 const express = require('express');
 require('dotenv').config();
+const cors = require("cors");
+const bodyParser = require('body-parser');
 const {
     MongoClient
 } = require('mongodb');
@@ -8,14 +10,23 @@ require('express-group-routes');
 const app = express()
 const port = process.env.PORT;
 
+app.use(express.static('public'));
+app.use(bodyParser.json());
+app.use(cors());
+
 const client = new MongoClient(process.env.FINAL_URL);
 
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+    res.status(300).redirect('/index.html');
 })
 
 app.group("/api", (router) => {
+
+    router.get('/', (req, res) => {
+        res.status(300).redirect('/index.html');
+    })
+
     router.get("/projects", async (req, res) => {
         try {
             await client.connect();
