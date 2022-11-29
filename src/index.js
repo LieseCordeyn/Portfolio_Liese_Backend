@@ -25,8 +25,8 @@ app.group("/api", (router) => {
 
     router.get("/projects", projectRoutes.allProjects )
     router.get("/projects/uitgelicht", projectRoutes.UitgelichteProject)
+    router.get("/projects/finalWorks", projectRoutes.FinalWorkProject)
+    router.get("/projects/expertLab", projectRoutes.ExpertLabProject)
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+app.listen(port)
